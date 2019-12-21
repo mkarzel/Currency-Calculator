@@ -1,0 +1,26 @@
+.app {
+    display: flex;
+    justify-content: center;
+}
+
+.calculator { 
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.22);
+    -moz-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.22);
+    -webkit-box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.22);
+    margin: 10px;
+}
+
+.calculator__bottom {
+    padding: 5px;
+    margin: 5px;
+}
+
+.calculator__bottom-button {
+    width: 50px;
+}
+
+.calculator__display {
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+}

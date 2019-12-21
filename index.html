@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+    <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+        integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <script src="scripts.js"></script>
+</head>
+
+<body>
+    <div class="app">
+        <div class="calculator">
+            <div>
+                <input id="display" class="form-control calculator__display" value="0" disabled>
+            </div>
+            <div class="calculator__bottom"> 
+                <div>
+                    <button type="button" class="btn btn-raised btn-danger calculator__bottom-button" value="C" onclick="clearAll()">C</button>
+                    <button type="button" class="btn btn-raised btn-danger calculator__bottom-button" value="CE" onclick="clearEntry()">CE</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(1)>1</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(2)>2</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(3)>3</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("*")>*</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(4)>4</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(5)>5</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(6)>6</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("/")>/</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(7)>7</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(8)>8</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(9)>9</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("-")>-</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('.')>.</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(0)>0</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=equal()>=</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("+")>+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
