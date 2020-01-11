@@ -18,32 +18,38 @@
             </div>
             <div class="calculator__bottom"> 
                 <div>
-                    <button type="button" class="btn btn-raised btn-danger calculator__bottom-button" value="C" onclick="clearAll()">C</button>
-                    <button type="button" class="btn btn-raised btn-danger calculator__bottom-button" value="CE" onclick="clearEntry()">CE</button>
+                    <button type="button" class="btn btn-raised btn-danger calculator__bottom-button" onclick="clearAll()">C</button>
+                    <button type="button" class="btn btn-raised btn-danger calculator__bottom-button" onclick="clearEntry()">CE</button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(1)>1</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(2)>2</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(3)>3</button>
-                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("*")>*</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('1')>1</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('2')>2</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('3')>3</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=insert('*')>*</button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(4)>4</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(5)>5</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(6)>6</button>
-                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("/")>/</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('4')>4</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('5')>5</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('6')>6</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=insert('/')>/</button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(7)>7</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(8)>8</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(9)>9</button>
-                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("-")>-</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('7')>7</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('8')>8</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('9')>9</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=insert('-')>-</button>
                 </div>
                 <div>
                     <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('.')>.</button>
-                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(0)>0</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('0')>0</button>
                     <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=equal()>=</button>
-                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=operation("+")>+</button>
+                    <button type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=insert('+')>+</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert('(')>(</button>
+                    <button type="button" class="btn btn-raised btn-secondary calculator__bottom-button" onclick=insert(')')>)</button>
+                    <button disabled type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=insert()>X<sup>Y</sup></button d>
+                    <button disabled type="button" class="btn btn-raised btn-info calculator__bottom-button" onclick=insert()>&#8730</button>
                 </div>
             </div>
         </div>
