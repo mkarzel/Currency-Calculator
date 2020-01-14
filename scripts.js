@@ -1,7 +1,7 @@
 let expression = ''
 let currentNumber = ''
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-const operators = ['+', '-', '*', '/']
+const operators = ['+', '-', '*', '/', '^', 'r']
 let lastOperatorIndex = -1
 
 const insert = (entry) => {
@@ -12,21 +12,29 @@ const insert = (entry) => {
         }
     }
     // displaying '0.' instead of '.' after clearing and pressing '.'
-    if (entry === '.' && expression === '') {
+    if (entry === '.' && (expression === '' || expression === '.')) {
         expression = '0'
     }
-    // disabling multiple operators and changing if clicked after each other
-    if (operators.includes(entry) && operators.includes(expression.slice(-1))) {
-        expression = expression.slice(0, -1)
+    // leave expression as '' when 0 clicked after clearing
+    if (entry === '0' && expression === '') {
+        return
     }
     // reset after dividing by 0
     if (expression === "nie dzielimy przez 0") {
         expression = ''
     }
-    // disabling '.' next to operator
+    // disabling '.' next to operator or operator next to operator unless - after r or ^
     if ((operators.includes(entry) || entry === '.') && (operators.includes(expression.slice(-1)) || expression.slice(-1) === '.')) {
-        return
+        // allow - after ^ or r
+        if (entry !== '-' && (expression.slice(-1) !== '^' || expression.slice(-1) !== 'r')){
+            return
+        }
+        // disable - after -
+        if (entry === '-' && expression.slice(-1) === '-'){
+            return
+        }
     }
+
     // only one '.' between operators
     if (entry === '.' && expression.lastIndexOf('.') > lastOperatorIndex) {
         return
@@ -58,19 +66,33 @@ const insert = (entry) => {
     if (entry === ')' && ((operators.includes(expression.slice(-1))) || (expression.slice(-1) === '('))) {
         return
     }
-    // only operator can be used after ')' or another ')' !!!!!!!!!!
-    if (expression.slice(-1) === ')' && !operators.includes(entry)) {
+    // only operator can be used after ')' or another ')'
+    if (expression.slice(-1) === ')' && (!operators.includes(entry))) {
         if (entry !== ')') {
             return
         }
     }
+    // no ^ or r after ')'
+    if (expression.slice(-1) === ')' && (entry.includes('^') || entry === 'r')) {
+        return
+    }
+    //no ^ or r after ^ or r
+    if ((expression.lastIndexOf('^') !== -1 || expression.lastIndexOf('r') !== -1) && (entry.includes('^') || entry.includes('r')) && (lastOperatorIndex === expression.lastIndexOf('^') || lastOperatorIndex === expression.lastIndexOf('r'))) {
+        return
+    }
+    //no ( after ^ or r
+    if (entry === '(' && (expression.slice(-1) === '^' || expression.slice(-1) === 'r')) {
+        return
+    }
     // only digits after '(' can be used or another '('
-    if (expression.slice(-1) === '(' && (!digits.includes(entry))){
-        if (entry !== '('){
-            return
+    if (expression.slice(-1) === '(' && (!digits.includes(entry))) {
+        if (entry !== '(') {
+            if (entry !== '-') {
+                return
+            }
         }
     }
-    
+
     currentNumber = currentNumber + entry
     expression = expression + entry
 }
@@ -99,7 +121,13 @@ const equal = () => {
     if ((expression.match(/\(/g) || []).length > (expression.match(/\)/g) || []).length) {
         return
     }
-    // string in if can not be calculated
+
+    // changing ^ to Math.pow (x,y)
+    expression = expression.replace(/(\d+\.?\d*)\s*\^\s*(-*\d+\.?\d*)/g, 'Math.pow($1, $2)');
+    // changing rt to Math.pow (x,1/r)
+    expression = expression.replace(/(\d+\.?\d*)\s*r\s*(-*\d+\.?\d*)/g, 'Math.pow($1, 1/$2)');
+    
+    // calculate expression unless it displays dividing by 0
     if (expression !== "nie dzielimy przez 0") {
         expression = eval(expression).toString()
     }
@@ -107,6 +135,10 @@ const equal = () => {
     if (expression === "Infinity" || expression === "-Infinity" || expression === "nie dzielimy przez 0") {
         expression = "nie dzielimy przez 0"
         return
+    }
+    // leave expression empty when 0
+    if (expression === '0'){
+        expression = ''
     }
 
     currentNumber = expression
