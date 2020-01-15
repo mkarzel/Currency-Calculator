@@ -3,6 +3,8 @@ let currentNumber = ''
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 const operators = ['+', '-', '*', '/', '^', 'r']
 let lastOperatorIndex = -1
+const currencies = ['USD', 'EUR', 'GBP', 'CHF', 'JPY']
+let rates = []
 
 const insert = (entry) => {
     // indexing operators in expression
@@ -26,11 +28,11 @@ const insert = (entry) => {
     // disabling '.' next to operator or operator next to operator unless - after r or ^
     if ((operators.includes(entry) || entry === '.') && (operators.includes(expression.slice(-1)) || expression.slice(-1) === '.')) {
         // allow - after ^ or r
-        if (entry !== '-' && (expression.slice(-1) !== '^' || expression.slice(-1) !== 'r')){
+        if (entry !== '-' && (expression.slice(-1) !== '^' || expression.slice(-1) !== 'r')) {
             return
         }
         // disable - after -
-        if (entry === '-' && expression.slice(-1) === '-'){
+        if (entry === '-' && expression.slice(-1) === '-') {
             return
         }
     }
@@ -92,6 +94,18 @@ const insert = (entry) => {
             }
         }
     }
+    // currency only after digit
+    if (currencies.includes(entry) && !digits.includes(expression.slice(-1))) {
+        return
+    }
+    // only '+' '-' '*' '/' ')' after currency
+    if (currencies.includes(expression.slice(-3)) && !(entry.includes('+') || entry.includes('-') || entry.includes('*') || entry.includes('/') || entry.includes(')'))) {
+        return
+    }
+    // no currency if last operator was r or ^
+    if (currencies.includes(entry) && lastOperatorIndex !== -1 && (lastOperatorIndex === expression.lastIndexOf('r') || lastOperatorIndex === expression.lastIndexOf('^'))) {
+        return
+    }
 
     currentNumber = currentNumber + entry
     expression = expression + entry
@@ -104,6 +118,12 @@ const clearAll = () => {
 }
 
 const clearEntry = () => {
+    // clear last 3 characters if currency
+    if (currencies.includes(expression.slice(-3))) {
+        expression = expression.slice(0, -3)
+        currentNumber = currentNumber.slice(0, -3)
+        return
+    }
     // clear entry unless it displays error
     if (expression !== "nie dzielimy przez 0") {
         expression = expression.slice(0, -1)
@@ -113,21 +133,25 @@ const clearEntry = () => {
 }
 
 const equal = () => {
-    // '=' right after operator will not do anything
-    if (operators.includes(expression.slice(-1))) {
-        return
-    }
     // if too many '(' in expression, it will not be evaluated
     if ((expression.match(/\(/g) || []).length > (expression.match(/\)/g) || []).length) {
         return
     }
+    //replace currency with * rate
+    for (let i = 0; i < currencies.length; i++) {
+        expression = expression.split(currencies[i]).join('*' + rates[i]);
+    }
+    // '=' right after operator will not do anything
+    if (operators.includes(expression.slice(-1))) {
+        return
+    }
 
     // changing ^ to Math.pow (x,y)
-    expression = expression.replace(/(\d+\.?\d*)\s*\^\s*(-*\d+\.?\d*)/g, 'Math.pow($1, $2)');
+    expression = expression.replace(/(\d+\.?\d*)\s*\^\s*(-*\d+\.?\d*)/g, 'Math.pow($1, $2)')
     // changing rt to Math.pow (x,1/r)
-    expression = expression.replace(/(\d+\.?\d*)\s*r\s*(-*\d+\.?\d*)/g, 'Math.pow($1, 1/$2)');
-    
-    // calculate expression unless it displays dividing by 0
+    expression = expression.replace(/(\d+\.?\d*)\s*r\s*(-*\d+\.?\d*)/g, 'Math.pow($1, 1/$2)')
+
+    // calculate expression unless it displays dividing by 0 error
     if (expression !== "nie dzielimy przez 0") {
         expression = eval(expression).toString()
     }
@@ -137,10 +161,13 @@ const equal = () => {
         return
     }
     // leave expression empty when 0
-    if (expression === '0'){
+    if (expression === '0') {
         expression = ''
     }
-
+    // round result if too many numbers after .
+    if(expression.length > 8 && expression.includes('.')){
+        expression = eval(expression).toFixed(4).toString()
+    }
     currentNumber = expression
 }
 
@@ -150,8 +177,20 @@ document.addEventListener('click', () => {
     if (expression === '') {
         document.querySelector("#display").value = '0'
     }
-    // console.log(expression)
-    // console.log('current number', currentNumber)
-    // console.log('lastoperatorindex', lastOperatorIndex)
-    // console.log('lastindex .', expression.lastIndexOf('.'))
 })
+
+const getRates = async () => {
+    for (let i = 0; i < currencies.length; i++) {
+        await fetch("http://api.nbp.pl/api/exchangerates/rates/A/" + currencies[i] + "/")
+            .then(async (response) => {
+                return await response.json();
+            })
+            .then((currenciesJson) => {
+                rates.push(currenciesJson.rates[0].mid)
+            }).catch((error) => {
+                console.error('Currencies are not loaded, please refresh', error);
+            });
+        document.querySelector(".dropdown-menu").innerHTML += '<button class="dropdown-item" onclick="insert(\'' + currencies[i] + '\')">' + currencies[i] + '</button>'
+    }
+}
+

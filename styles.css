@@ -19,6 +19,11 @@
     width: 50px;
 }
 
+.calculator__bottom-dropdown {
+    display: flex;
+    justify-content: center;
+}
+
 .calculator__display {
     width: 100%;
     text-align: right;
