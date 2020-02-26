@@ -204,4 +204,4 @@ const getRates = async () => {
     }
 }
 
-window.onload = getRates()
+window.onload = getRates
