@@ -190,8 +190,8 @@ document.addEventListener('click', () => {
 
 const getRates = async () => {
     try {
-        response = await fetch("http://api.nbp.pl/api/exchangerates/tables/a")
-        currenciesData = await response.json()
+        const response = await fetch("http://api.nbp.pl/api/exchangerates/tables/a")
+        const currenciesData = await response.json()
 
         for (let i = 0; i < currenciesData[0].rates.length; i++) {
             currencies.push(currenciesData[0].rates[i].code)
