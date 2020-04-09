@@ -194,6 +194,16 @@ eq.addEventListener('click', () => {
     equal()
 })
 
+const root = document.querySelector('.root')
+root.addEventListener('click', () => {
+    insert('r')
+})
+
+const power = document.querySelector('.power')
+power.addEventListener('click', () => {
+    insert('^')
+})
+
 const insertButtons = document.querySelectorAll('.insert')
 for (let i = 0; i < insertButtons.length; i++) {
     insertButtons[i].addEventListener('click', () => {
