@@ -1,4 +1,3 @@
-const display = document.querySelector("#display");
 let expression = ''
 let currentNumber = ''
 const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -8,7 +7,7 @@ let currencies = []
 let rates = []
 
 const insert = (entry) => {
-    if (validateInsert(entry)){
+    if (validateInsert(entry)) {
         currentNumber = currentNumber + entry
         expression = expression + entry
     }
@@ -158,7 +157,7 @@ const equal = () => {
     expression = expression.replace(/(\d+\.?\d*)\s*r\s*(-*\d+\.?\d*)/g, 'Math.pow($1, 1/$2)')
 
     // calculate expression unless it displays dividing by 0 error
-    if (expression !== ""){
+    if (expression !== "") {
         if (expression !== "nie dzielimy przez 0") {
             expression = eval(expression).toString()
         }
@@ -180,6 +179,29 @@ const equal = () => {
     currentNumber = expression
 }
 
+const c = document.querySelector('.c')
+c.addEventListener('click', () => {
+    clearAll()
+})
+
+const ce = document.querySelector('.ce')
+ce.addEventListener('click', () => {
+    clearEntry()
+})
+
+const eq = document.querySelector('.eq')
+eq.addEventListener('click', () => {
+    equal()
+})
+
+const insertButtons = document.querySelectorAll('.insert')
+for (let i = 0; i < insertButtons.length; i++) {
+    insertButtons[i].addEventListener('click', () => {
+            insert(insertButtons[i].innerHTML)
+        })
+}
+
+const display = document.querySelector("#display")
 document.addEventListener('click', () => {
     display.value = expression
     // display 0 after clearing
